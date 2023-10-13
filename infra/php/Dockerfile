@@ -22,6 +22,12 @@ RUN apk add --no-cache --virtual .build-deps ${PHPIZE_DEPS} && \
     apk del .build-deps && \
     rm -rf /tmp/*
 
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN apk add --no-cache --virtual .build-deps linux-headers autoconf gcc g++ make && \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug && \
+    apk del .build-deps
+
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 ADD ./infra/php/settings/php.ini /usr/local/etc/php/php.ini
 ADD ./infra/php/settings/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
