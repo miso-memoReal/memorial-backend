@@ -11,7 +11,8 @@ ENV TZ=Asia/Tokyo \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8
 
-RUN apk add --no-cache --virtual .build-deps ${PHPIZE_DEPS} && \
+RUN apk add --no-cache curl=8.4.0-r0 libcurl=8.4.0-r0 nghttp2-libs=1.57.0-r0 && \
+    apk add --no-cache --virtual .build-deps ${PHPIZE_DEPS} && \
     apk add --no-cache oniguruma-dev libpq-dev shadow php82-zip libzip-dev libpng-dev php82-simplexml libxml2-dev && \
     pecl install redis && \
     pecl install protobuf && \
