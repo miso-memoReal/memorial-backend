@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\MemoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MemoController;
 
 /*
 |--------------------------------------------------------------------------

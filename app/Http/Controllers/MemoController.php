@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class MemoController extends Controller
 {
     public function index($x, $y)
@@ -19,6 +17,7 @@ class MemoController extends Controller
         // return view('memo', ['distance' => $distance]);
 
         $distance = \DB::select('select * from memos');
+
         // where ST_Distance(ST_GeomFromText(\'POINT(139.1235 69.3521)\',4326), ST_GeomFromText(\'POINT(139.1235 35.3521)\',4326)) <= 50
         return response()->json($distance);
     }
