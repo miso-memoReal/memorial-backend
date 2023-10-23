@@ -16,6 +16,9 @@ jobs:
         uses: ./.github/actions/prepare-docker-image
         with:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
+      - name: Prepare for envfiles
+        run: |
+          cp .env.example .env
       - name: Docker Compose Up
         run: |
           docker compose -f compose.ci.yml up -d
@@ -34,6 +37,9 @@ jobs:
         uses: ./.github/actions/prepare-docker-image
         with:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
+      - name: Prepare for envfiles
+        run: |
+          cp .env.example .env
       - name: Docker Compose Up
         run: |
           docker compose -f compose.ci.yml up -d
