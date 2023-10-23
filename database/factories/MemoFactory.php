@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Memo;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Memo>
@@ -23,15 +22,16 @@ class MemoFactory extends Factory
         $latitude = fake()->latitude;
         $longitude = fake()->longitude;
         $point = [
-            "type" => "Point",
-            "coordinates" => [
+            'type' => 'Point',
+            'coordinates' => [
                 $latitude, // 経度
-                $longitude // 緯度
-            ]
+                $longitude, // 緯度
+            ],
         ];
+
         return [
             'memoContent' => fake()->realText(254),
-            'memoCoordinate' => $point
+            'memoCoordinate' => $point,
         ];
     }
 }
