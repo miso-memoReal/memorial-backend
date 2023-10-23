@@ -5,6 +5,14 @@ inputs:
     description: Docker Image Tag for CI
     required: true
 
+outputs:
+  WWWUSER:
+    description: WWWUSER
+    value: ${{ steps.prepare-for-ci.outputs.WWWUSER }}
+  WWWGROUP:
+    description: WWWGROUP
+    value: ${{ steps.prepare-for-ci.outputs.WWWGROUP }}
+
 runs:
   using: composite
   steps:
@@ -14,7 +22,9 @@ runs:
       id: prepare-for-ci
       run: |
         echo "WWWUSER=$(id -u)" >> $GITHUB_ENV
+        echo "WWWUSER=$(id -u)" >> $GITHUB_OUTPUT
         echo "WWWGROUP=$(id -g)" >> $GITHUB_ENV
+        echo "WWWGROUP=$(id -g)" >> $GITHUB_OUTPUT
     - name: Cache Docker Registry
       uses: actions/cache@v3
       with:
