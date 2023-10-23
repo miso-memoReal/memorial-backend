@@ -16,12 +16,13 @@ jobs:
         uses: ./.github/actions/prepare-docker-image
         with:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
-      - name: Prepare for envfiles
+      - name: Componser Install
+        run: make composer-install
+      - name: Prepare for testing
         run: |
           cp .env.example .env
           cp compose.ci.yml docker-compose.yml
-      - name: Componser Install
-        run: make composer-install
+          docker run --rm -i --user $(shell id -u):$(shell id -g) -v ./:/var/www/html -w /var/www/html laravelsail/php82-composer:latest php artisan key:generate
       - name: Docker Compose Up
         run: docker compose up -d
         env:
@@ -37,12 +38,12 @@ jobs:
         uses: ./.github/actions/prepare-docker-image
         with:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
+      - name: Componser Install
+        run: make composer-install
       - name: Prepare for envfiles
         run: |
           cp .env.example .env
           cp compose.ci.yml docker-compose.yml
-      - name: Componser Install
-        run: make composer-install
       - name: Docker Compose Up
         run: docker compose up -d
         env:
