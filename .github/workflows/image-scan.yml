@@ -17,6 +17,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Prepare for ci
+        id: prepare-for-ci
+        run: |
+          cp .env.example .env
+          echo "WWWUSER=$(id -u)" >> $GITHUB_ENV
+          echo "WWWGROUP=$(id -g)" >> $GITHUB_ENV
       - name: Cache Docker Registry
         uses: actions/cache@v3
         with:
