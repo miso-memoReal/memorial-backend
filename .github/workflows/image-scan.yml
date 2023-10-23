@@ -37,7 +37,7 @@ jobs:
           echo TAG $TAG
       - name: Docker Compose Pull
         run: |
-          docker compose pull laravel.test postgres
+          docker compose pull laravel.test pgsql
       - name: Nginx Container Scan
         uses: aquasecurity/trivy-action@master
         with:
