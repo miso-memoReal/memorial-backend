@@ -11,7 +11,12 @@ setup-local:
 
 .Pony: setup-ci
 setup-ci:
+	(cp compose.ci.yml docker-compose.yml)
 	@make setup
+
+.Pony: composer-install
+composer-install:
+    (${BACKEND_ENV} composer install --ignore-platform-reqs)
 
 # swagger-ui:
 # 	(cd utils && docker compose up swagger_ui -d --no-recreate )
@@ -25,16 +30,6 @@ setup:
 	@make up
 	@make generate
 	# (${SAIL} pint)
-
-.Pony: setup-ci
-setup-ci:
-    (cp .env.example .env)
-    # compose.ci.ymlを使うように
-    (cp compose.ci.yml docker-compose.yml)
-    (${BACKEND_ENV} composer install --ignore-platform-reqs)
-    (${BACKEND_ENV} php artisan key:generate)
-    @make up
-	@make generate
 
 .Pony: build
 build:
