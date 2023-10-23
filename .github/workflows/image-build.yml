@@ -4,7 +4,7 @@ on:
   - workflow_dispatch
 
 env:
-  COMPOSE_FILE: docker-compose.yml
+  COMPOSE_FILE: compose.ci.yml
 
 jobs:
   image-build:
