@@ -52,7 +52,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd docker &&
           docker buildx bake \
               --builder="${{ steps.buildx.outputs.name }}" \
               --set='*.cache-from=type=local,src=/tmp/.buildx-cache' \
