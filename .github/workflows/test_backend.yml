@@ -19,9 +19,10 @@ jobs:
       - name: Prepare for envfiles
         run: |
           cp .env.example .env
+          cp compose.ci.yml docker-compose.yml
       - name: Docker Compose Up
         run: |
-          docker compose -f compose.ci.yml up -d
+          docker compose up -d
         env:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Componser Install
@@ -40,9 +41,10 @@ jobs:
       - name: Prepare for envfiles
         run: |
           cp .env.example .env
+          cp compose.ci.yml docker-compose.yml
       - name: Docker Compose Up
         run: |
-          docker compose -f compose.ci.yml up -d
+          docker compose up -d
         env:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Componser Install
