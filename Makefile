@@ -16,7 +16,7 @@ setup-ci:
 
 .Pony: composer-install
 composer-install:
-    (${BACKEND_ENV} composer install --ignore-platform-reqs)
+	(${BACKEND_ENV} composer install --ignore-platform-reqs)
 
 # swagger-ui:
 # 	(cd utils && docker compose up swagger_ui -d --no-recreate )
