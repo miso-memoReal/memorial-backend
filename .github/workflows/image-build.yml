@@ -1,7 +1,11 @@
 name: Image build
 on:
-  - workflow_call
-  - workflow_dispatch
+  workflow_call:
+    outputs:
+      docker_image_tag_ci:
+        description: Docker image tag for CI
+        value: ${{ github.event.outputs.docker_image_tag_ci }}
+  workflow_dispatch:
 
 env:
   COMPOSE_FILE: compose.ci.yml

@@ -51,6 +51,8 @@ jobs:
       - build
     uses: ./.github/workflows/image-scan.yml
     secrets: inherit
+    with:
+      docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
   # deploy:
   #   if: github.event.pull_request.draft == false
   #   uses: ./.github/workflows/push-to-ghcr.yml
