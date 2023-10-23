@@ -45,6 +45,8 @@ jobs:
       - build
     uses: ./.github/workflows/test_backend.yml
     secrets: inherit
+    with:
+      docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
   image-scan:
     needs:
       - prepare
@@ -53,6 +55,7 @@ jobs:
     secrets: inherit
     with:
       docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
+  # TODO
   # deploy:
   #   if: github.event.pull_request.draft == false
   #   uses: ./.github/workflows/push-to-ghcr.yml

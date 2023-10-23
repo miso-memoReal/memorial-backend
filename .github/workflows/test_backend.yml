@@ -1,12 +1,21 @@
 name: Test(Backend)
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      docker_image_tag_ci:
+        required: true
+        type: string
+    secrets: {}
 
 jobs:
   Test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Prepare Docker Image
+        uses: ./.github/actions/prepare-docker-image
+        with:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Setup CI
         run: make setup
       - name: Test
@@ -14,8 +23,11 @@ jobs:
   Lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Prepare Docker Image
+        uses: ./.github/actions/prepare-docker-image
+        with:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Setup CI
         run: make setup
       - name: Lint
