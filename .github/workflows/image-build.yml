@@ -57,12 +57,12 @@ jobs:
       - name: Build Docker Image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WWWUSER: ${{ steps.prepare-for-build.outputs.WWWUSER }}
+          WWWGROUP: ${{ steps.prepare-for-build.outputs.WWWGROUP }}
         run: |
           docker buildx bake \
               --builder="${{ steps.buildx.outputs.name }}" \
               --set='*.cache-from=type=local,src=/tmp/.buildx-cache' \
               --set='*.cache-to=type=local,dest=/tmp/.buildx-cache' \
-              --set='{laravel.test}.args.WWWUSER=${{ steps.prepare-for-build.outputs.WWWUSER }}' \
-              --set='{laravel.test}.args.WWWGROUP=${{ steps.prepare-for-build.outputs.WWWGROUP }}' \
               --push \
               -f "${COMPOSE_FILE}"
