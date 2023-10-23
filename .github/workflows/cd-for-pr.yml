@@ -23,7 +23,6 @@ permissions:
 
 jobs:
   prepare:
-    if: github.event.pull_request.draft == false
     timeout-minutes: 60
     runs-on:
       - ubuntu-latest
@@ -36,12 +35,20 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT && echo "head_ref=$(echo ${GITHUB_HEAD_REF} | sed -e 's/\//-/g')" >> $GITHUB_OUTPUT
   build:
+    needs:
+      - prepare
     uses: ./.github/workflows/image-build.yml
     secrets: inherit
   ci:
+    needs:
+      - prepare
+      - build
     uses: ./.github/workflows/test_backend.yml
     secrets: inherit
   image-scan:
+    needs:
+      - prepare
+      - build
     uses: ./.github/workflows/image-scan.yml
     secrets: inherit
   # deploy:
