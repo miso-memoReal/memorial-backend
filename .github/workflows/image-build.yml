@@ -4,7 +4,7 @@ on:
     outputs:
       docker_image_tag_ci:
         description: Docker image tag for CI
-        value: ${{ github.event.outputs.docker_image_tag_ci }}
+        value: ${{ jobs.image-build.outputs.docker_image_tag_ci }}
   workflow_dispatch:
 
 env:
