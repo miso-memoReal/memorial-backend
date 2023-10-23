@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('memos', function (Blueprint $table) {
             $table->id('memoID');
             $table->string('memoContent');
-            $table->point('memoCoordinate');
+            $table->geometry('memoCoordinate');
             $table->timestamps(); // This will create 'created_at' and 'updated_at' timestamp columns
             $table->softDeletes();
         });

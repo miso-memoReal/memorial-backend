@@ -22,10 +22,16 @@ class MemoFactory extends Factory
     {
         $latitude = fake()->latitude;
         $longitude = fake()->longitude;
-
+        $point = [
+            "type" => "Point",
+            "coordinates" => [
+                $latitude, // 経度
+                $longitude // 緯度
+            ]
+        ];
         return [
             'memoContent' => fake()->realText(254),
-            'memoCoordinate' => DB::raw("ST_GeomFromText('POINT($latitude $longitude)')"),
+            'memoCoordinate' => $point
         ];
     }
 }
