@@ -58,6 +58,5 @@ jobs:
               --builder="${{ steps.buildx.outputs.name }}" \
               --set='*.cache-from=type=local,src=/tmp/.buildx-cache' \
               --set='*.cache-to=type=local,dest=/tmp/.buildx-cache' \
-              --set='*.tags=my-image:${{ steps.generate_docker_image_tag.outputs.docker_image_tag_ci }}' \
               --push \
               -f "${COMPOSE_FILE}"
