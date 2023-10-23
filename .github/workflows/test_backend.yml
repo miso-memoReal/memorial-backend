@@ -18,7 +18,9 @@ jobs:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Docker Compose Up
         run: |
-          docker-compose -f compose.ci.yml up -d
+          docker compose -f compose.ci.yml up -d
+        env:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Componser Install
         run: make composer-install
       - name: Test
@@ -34,7 +36,9 @@ jobs:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Docker Compose Up
         run: |
-          docker-compose -f compose.ci.yml up -d
+          docker compose -f compose.ci.yml up -d
+        env:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Componser Install
         run: make composer-install
       - name: Lint
