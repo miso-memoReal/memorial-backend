@@ -11,6 +11,7 @@ on:
       - ready_for_review
       - labeled
       - unlabeled
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -34,6 +35,9 @@ jobs:
       - name: Set outputs
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT && echo "head_ref=$(echo ${GITHUB_HEAD_REF} | sed -e 's/\//-/g')" >> $GITHUB_OUTPUT
+  build:
+    uses: ./.github/workflows/image-build.yml
+    secrets: inherit
   ci:
     uses: ./.github/workflows/test_backend.yml
     secrets: inherit
