@@ -26,6 +26,16 @@ setup:
 	@make generate
 	# (${SAIL} pint)
 
+.Pony: setup-ci
+setup-ci:
+    (cp .env.example .env)
+    # compose.ci.ymlを使うように
+    (cp compose.ci.yml docker-compose.yml)
+    (${BACKEND_ENV} composer install --ignore-platform-reqs)
+    (${BACKEND_ENV} php artisan key:generate)
+    @make up
+	@make generate
+
 .Pony: build
 build:
 	(${BACKEND_ENV} composer install --ignore-platform-reqs)

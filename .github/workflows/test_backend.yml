@@ -17,7 +17,7 @@ jobs:
         with:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Setup CI
-        run: make setup
+        run: make setup-ci
       - name: Test
         run: make test
   Lint:
@@ -29,6 +29,6 @@ jobs:
         with:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Setup CI
-        run: make setup
+        run: make setup-ci
       - name: Lint
         run: make lint
