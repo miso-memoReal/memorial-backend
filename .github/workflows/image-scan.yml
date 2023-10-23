@@ -15,35 +15,11 @@ jobs:
     name: Image Scan
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Prepare for ci
-        id: prepare-for-ci
-        run: |
-          cp .env.example .env
-          echo "WWWUSER=$(id -u)" >> $GITHUB_ENV
-          echo "WWWGROUP=$(id -g)" >> $GITHUB_ENV
-      - name: Cache Docker Registry
-        uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - name: Prepare Docker Image
+        uses: ./.github/actions/prepare-docker-image
         with:
-          path: /tmp/docker-registry
-          key: docker-registry-${{ github.ref }}-${{ github.sha }}
-          restore-keys: |
-            docker-registry-${{ github.ref }}
-            docker-registry-
-      - name: Boot-up Local Docker Registry
-        run: docker run -d -p 5000:5000 --restart=always --name registry -v /tmp/docker-registry:/var/lib/registry registry:2
-      - name: Wait for Docker Registry
-        run: npx wait-on tcp:5000
-      - name: Get Docker Image Tag
-        env:
-          TAG: ${{ inputs.docker_image_tag_ci }}
-        run: |
-          echo "DOCKER_IMAGE_TAG_CI=$TAG" >> $GITHUB_ENV
-          echo TAG $TAG
-      - name: Docker Compose Pull
-        run: |
-          docker compose pull laravel.test nginx pgsql
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Nginx Container Scan
         uses: aquasecurity/trivy-action@master
         with:
