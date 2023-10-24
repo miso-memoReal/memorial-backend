@@ -13,9 +13,8 @@ class Memo extends Model
 
     protected $primaryKey = 'memoID';
 
-    protected $fillable = [
-        'memoContent',
-        'memoCoordinate',
+    protected $guarded = [
+        'memoID'
     ];
 
     public function memoCoordinate(): Attribute
