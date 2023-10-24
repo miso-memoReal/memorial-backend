@@ -14,7 +14,7 @@ class Memo extends Model
     protected $primaryKey = 'memoID';
 
     protected $guarded = [
-        'memoID'
+        'memoID',
     ];
 
     public function memoCoordinate(): Attribute
