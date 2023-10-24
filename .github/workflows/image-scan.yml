@@ -1,31 +1,29 @@
 name: Image Scan
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - ready_for_review
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      docker_image_tag_ci:
+        required: true
+        type: string
+    secrets: {}
+
+env:
+  COMPOSE_FILE: compose.ci.yml
 
 jobs:
   build:
     name: Image Scan
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Build images
-        run: |
-          make all-containers-build
+      - uses: actions/checkout@v4
+      - name: Prepare Docker Image
+        uses: ./.github/actions/prepare-docker-image
+        with:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Nginx Container Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "memorial-backend-nginx:latest"
+          image-ref: "localhost:5000/php-ci:${{ inputs.DOCKER_IMAGE_TAG_CI }}"
           format: "table"
           exit-code: "1"
           ignore-unfixed: true
@@ -34,7 +32,7 @@ jobs:
       - name: PHP Container Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: "memorial-backend-laravel.test:latest"
+          image-ref: "localhost:5000/nginx-ci:${{ inputs.DOCKER_IMAGE_TAG_CI }}"
           format: "table"
           exit-code: "1"
           ignore-unfixed: true

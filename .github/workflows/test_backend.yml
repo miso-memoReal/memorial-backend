@@ -1,34 +1,51 @@
 name: Test(Backend)
-
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - ready_for_review
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      docker_image_tag_ci:
+        required: true
+        type: string
+    secrets: {}
 
 jobs:
   Test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup CI
-        run: make setup
+      - uses: actions/checkout@v4
+      - name: Prepare Docker Image
+        id: prepare-docker-image
+        uses: ./.github/actions/prepare-docker-image
+        with:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
+      - name: Componser Install
+        run: make composer-install
+      - name: Prepare for testing
+        run: |
+          cp .env.example .env
+          docker run --rm -i --user ${{ steps.prepare-docker-image.outputs.WWWUSER }}:${{ steps.prepare-docker-image.outputs.WWWGROUP }} -v ./:/var/www/html -w /var/www/html laravelsail/php82-composer:latest php artisan key:generate
+      - name: Docker Compose Up
+        run: docker compose -f compose.ci.yml up -d
+        env:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Test
         run: make test
+
   Lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup CI
-        run: make setup
+      - uses: actions/checkout@v4
+      - name: Prepare Docker Image
+        uses: ./.github/actions/prepare-docker-image
+        with:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
+      - name: Componser Install
+        run: make composer-install
+      - name: Prepare for envfiles
+        run: |
+          cp .env.example .env
+      - name: Docker Compose Up
+        run: docker compose -f compose.ci.yml up -d
+        env:
+          docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Lint
         run: make lint

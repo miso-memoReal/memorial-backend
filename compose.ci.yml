@@ -1,6 +1,7 @@
 services:
 
     laravel.test:
+        image: localhost:5000/php-ci:${DOCKER_IMAGE_TAG_CI}
         build:
             context: .
             dockerfile: ./infra/php/Dockerfile
@@ -27,6 +28,7 @@ services:
             # redis:
             #     condition: service_started
     nginx:
+        image: localhost:5000/nginx-ci:${DOCKER_IMAGE_TAG_CI}
         build:
             context: ./infra/nginx
             dockerfile: Dockerfile

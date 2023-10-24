@@ -9,9 +9,9 @@ BACKEND_ROOT=$(shell git rev-parse --show-superproject-working-tree --show-tople
 setup-local:
 	@make setup
 
-.Pony: setup-ci
-setup-ci:
-	@make setup
+.Pony: composer-install
+composer-install:
+	(${BACKEND_ENV} composer install --ignore-platform-reqs)
 
 # swagger-ui:
 # 	(cd utils && docker compose up swagger_ui -d --no-recreate )
