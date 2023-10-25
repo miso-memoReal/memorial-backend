@@ -1,0 +1,63 @@
+name: Remove Package Version
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        required: true
+        type: string
+      tag-name:
+        required: true
+        type: string
+
+jobs:
+  remove-package-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare
+        id: prepare
+        run: |
+          echo "name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_OUTPUT
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Generate github token
+        id: generate_token
+        uses: tibdex/github-app-token@v2.1.0
+        with:
+          app_id: ${{ vars.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+        env:
+          OPENSSL_CONF: /dev/null
+      - name: Get package version ID
+        id: get_package_version_id
+        run: |
+          package_version_id=$(gh api graphql --paginate -f query='
+            query($owner: String!, $repo: String!, $packageName: String!, $tagName: String!) {
+              repository(owner: $owner, name: $repo) {
+                packages(packageType:DOCKER, names:[$packageName]) {
+                  nodes {
+                    versions {
+                      nodes {
+                        id
+                        version
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ' -F owner=${{ github.repository_owner }} -F repo=${{ steps.prepare.outputs.name }} -F packageName=${{ inputs.package-name }} -F tagName=${{ inputs.tag-name }} | jq -r '.data.repository.packages.nodes[0].versions.nodes[] | select(.version == "${{ inputs.tag-name }}") | .id')
+          echo "PACKAGE_VERSION_ID=$package_version_id" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+
+      - name: Delete package version
+        run: |
+          gh api graphql -f query='
+            mutation($input: DeletePackageVersionInput!) {
+              deletePackageVersion(input: $input) {
+                success
+              }
+            }
+          ' -f input="{\"packageVersionId\":\"${{ steps.get_package_version_id.outputs.PACKAGE_VERSION_ID }}\"}"
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
