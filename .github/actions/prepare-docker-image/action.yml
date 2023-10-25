@@ -50,8 +50,7 @@ runs:
       shell: bash
       run: |
         docker compose pull laravel.test nginx pgsql
-    # localhost:5000にあるイメージの一覧を表示
-    - name: List Docker Registry
-      shell: bash
-      run: |
-        curl -X GET http://localhost:5000/v2/_catalog
+    # - name: List Docker Registry
+    #   shell: bash
+    #   run: |
+    #     curl -X GET http://localhost:5000/v2/_catalog
