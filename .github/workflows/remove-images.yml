@@ -28,6 +28,8 @@ jobs:
           DOCKER_HUB_IMAGE_PHP="na2na/${{ steps.prepare.outputs.name }}-php:${{ inputs.branch }}"
           DOCKER_HUB_IMAGE_NGINX="na2na/${{ steps.prepare.outputs.name }}-nginx:${{ inputs.branch }}"
           echo "Deleting $DOCKER_HUB_IMAGE_PHP and $DOCKER_HUB_IMAGE_NGINX from Docker Hub..."
-          docker_hub_token=$(curl -s -X POST -H "Content-Type: application/json" -d '{"username": "'${{ secrets.DOCKER_HUB_NA2NA_ID }}'", "password": "'${{ secrets.DOCKER_HUB_NA2NA_PASSWORD }}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+          docker_hub_token=$(curl -s -X POST -H "Content-Type: application/json" \
+          -d '{"username": "'${{ secrets.DOCKER_HUB_NA2NA_ID }}'", "password": "'${{ secrets.DOCKER_HUB_NA2NA_PASSWORD }}'"}' \
+          https://hub.docker.com/v2/users/login/ | jq -r .token)
           curl -X DELETE -H "Authorization: JWT $docker_hub_token" "https://hub.docker.com/v2/repositories/na2na/${{ steps.prepare.outputs.name }}-php/tags/${{ inputs.branch }}"
           curl -X DELETE -H "Authorization: JWT $docker_hub_token" "https://hub.docker.com/v2/repositories/na2na/${{ steps.prepare.outputs.name }}-nginx/tags/${{ inputs.branch }}"
