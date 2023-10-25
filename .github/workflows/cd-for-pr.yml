@@ -71,6 +71,7 @@ jobs:
       - build
       - ci
       - image-scan
+      - remove-images
     with:
       docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
       sha_short: ${{ needs.prepare.outputs.sha_short }}
