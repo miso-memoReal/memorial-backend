@@ -17,16 +17,6 @@ jobs:
         id: prepare
         run: |
           echo "name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_OUTPUT
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Generate github token
-        id: generate_token
-        uses: tibdex/github-app-token@v2.1.0
-        with:
-          app_id: ${{ vars.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
-        env:
-          OPENSSL_CONF: /dev/null
       - name: Get package version ID
         id: get_package_version_id
         run: |
@@ -34,10 +24,10 @@ jobs:
           package_version_id=$(echo "$response" | jq -r '.[] | select(.metadata.container.tags[] == "${{ inputs.tag-name }}").id')
           echo "PACKAGE_VERSION_ID=$package_version_id" >> $GITHUB_OUTPUT
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Delete package version
         run: |
           echo "Deleting package version ${{ steps.get_package_version_id.outputs.PACKAGE_VERSION_ID }}..."
           gh api -X DELETE /orgs/${{ github.repository_owner }}/packages/container/${{ inputs.package-name }}/versions/${{ steps.get_package_version_id.outputs.PACKAGE_VERSION_ID }}
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
