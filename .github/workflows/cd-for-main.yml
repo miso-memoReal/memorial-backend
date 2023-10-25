@@ -1,13 +1,12 @@
 name: CD for main push
 on:
-  # TODO
-  # push:
-  #   branches:
-  #     - main
-  #     - master
-  #   paths-ignore:
-  #     - README.md
-  - workflow_dispatch
+  push:
+    branches:
+      - main
+      - master
+    paths-ignore:
+      - README.md
+  workflow_dispatch:
 
 permissions:
   contents: read
