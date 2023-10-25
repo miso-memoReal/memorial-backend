@@ -30,34 +30,14 @@ jobs:
       - name: Get package version ID
         id: get_package_version_id
         run: |
-          package_version_id=$(gh api graphql --paginate -f query='
-            query($owner: String!, $repo: String!, $packageName: String!, $tagName: String!) {
-              repository(owner: $owner, name: $repo) {
-                packages(packageType:DOCKER, names:[$packageName]) {
-                  nodes {
-                    versions {
-                      nodes {
-                        id
-                        version
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          ' -F owner=${{ github.repository_owner }} -F repo=${{ steps.prepare.outputs.name }} -F packageName=${{ inputs.package-name }} -F tagName=${{ inputs.tag-name }} | jq -r '.data.repository.packages.nodes[0].versions.nodes[] | select(.version == "${{ inputs.tag-name }}") | .id')
+          response=$(gh api users/${{ github.repository_owner }}/packages/container/${{ inputs.package-name }}/versions)
+          package_version_id=$(echo "$response" | jq -r '.[] | select(.metadata.container.tags[] == "${{ inputs.tag-name }}").id')
           echo "PACKAGE_VERSION_ID=$package_version_id" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-
       - name: Delete package version
         run: |
-          gh api graphql -f query='
-            mutation($input: DeletePackageVersionInput!) {
-              deletePackageVersion(input: $input) {
-                success
-              }
-            }
-          ' -f input="{\"packageVersionId\":\"${{ steps.get_package_version_id.outputs.PACKAGE_VERSION_ID }}\"}"
+          echo "Deleting package version ${{ steps.get_package_version_id.outputs.PACKAGE_VERSION_ID }}..."
+          gh api -X DELETE /orgs/${{ github.repository_owner }}/packages/container/${{ inputs.package-name }}/versions/${{ steps.get_package_version_id.outputs.PACKAGE_VERSION_ID }}
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
