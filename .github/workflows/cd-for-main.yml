@@ -25,19 +25,18 @@ jobs:
       - name: Set outputs
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-  # deploy:
-  #   uses: ./.github/workflows/push-to-ghcr.yml
-  #   needs:
-  #     - prepare
-  #   with:
-  #     sha_short: ${{ needs.prepare.outputs.sha_short }}
-  #     ref: main
-  #   secrets: inherit
-  # deploy-docker-hub:
-  #   uses: ./.github/workflows/push-to-dockerhub.yml
-  #   needs:
-  #     - prepare
-  #   with:
-  #     sha_short: ${{ needs.prepare.outputs.sha_short }}
-  #     ref: main
-  #   secrets: inherit
+  build:
+    needs:
+      - prepare
+    uses: ./.github/workflows/image-build.yml
+    secrets: inherit
+  image-push:
+    uses: ./.github/workflows/image-push.yml
+    needs:
+      - prepare
+      - build
+    with:
+      docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
+      sha_short: ${{ needs.prepare.outputs.sha_short }}
+      branch: main
+    secrets: inherit
