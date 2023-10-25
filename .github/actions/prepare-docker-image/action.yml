@@ -50,3 +50,7 @@ runs:
       shell: bash
       run: |
         docker compose pull laravel.test nginx pgsql
+    # - name: List docker images in registry
+    #   shell: bash
+    #   run: |
+    #     curl -X GET http://localhost:5000/v2/_catalog
