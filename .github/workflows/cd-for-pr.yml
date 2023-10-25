@@ -55,14 +55,16 @@ jobs:
     secrets: inherit
     with:
       docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
-  # TODO
-  # image-push:
-  #   if: github.event.pull_request.draft == false
-  #   uses: ./.github/workflows/push-to-ghcr.yml
-  #   needs:
-  #     - prepare
-  #     - ci
-  #   with:
-  #     sha_short: ${{ needs.prepare.outputs.sha_short }}
-  #     ref: ${{ needs.prepare.outputs.head_ref }}
-  #   secrets: inherit
+  image-push-to:
+    if: github.event.pull_request.draft == false
+    uses: ./.github/workflows/image-push.yml
+    needs:
+      - prepare
+      - build
+      - ci
+      - image-scan
+    with:
+      docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
+      sha_short: ${{ needs.prepare.outputs.sha_short }}
+      branch: ${{ needs.prepare.outputs.head_ref }}
+    secrets: inherit
