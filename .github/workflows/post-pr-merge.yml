@@ -1,0 +1,12 @@
+name: Post PR Merge
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+    types:
+      - closed
+
+jobs:
+  remove-images:
+    uses: ./.github/workflows/remove-images.yml

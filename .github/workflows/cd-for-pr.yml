@@ -68,6 +68,6 @@ jobs:
       sha_short: ${{ needs.prepare.outputs.sha_short }}
       branch: ${{ needs.prepare.outputs.head_ref }}
     secrets: inherit
-  undeploy:
-    uses: ./.github/workflows/undeploy.yml
+  remove-images:
+    uses: ./.github/workflows/remove-images.yml
     needs: image-push

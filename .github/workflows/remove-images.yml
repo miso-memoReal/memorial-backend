@@ -1,4 +1,4 @@
-name: Undeploy
+name: Remove Images
 on:
   pull_request:
     branches:
@@ -9,7 +9,7 @@ on:
   workflow_call:
 
 jobs:
-  undeploy:
+  remove-images:
     runs-on: ubuntu-latest
     steps:
       - name: Prepare
