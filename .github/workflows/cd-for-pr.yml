@@ -75,3 +75,4 @@ jobs:
       - image-push
     with:
       branch: ${{ needs.prepare.outputs.head_ref }}
+    secrets: inherit

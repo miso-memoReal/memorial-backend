@@ -10,3 +10,6 @@ on:
 jobs:
   remove-images:
     uses: ./.github/workflows/remove-images.yml
+    with:
+      branch: ${{ github.event.pull_request.head.ref }}
+    secrets: inherit
