@@ -1,0 +1,35 @@
+name: Undeploy
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+    types:
+      - closed
+
+jobs:
+  undeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare
+        id: prepare
+        run: |
+          echo "name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_OUTPUT
+          echo "OWNER_REPO=$(echo ${GITHUB_REPOSITORY} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+          echo "TAG_BRANCH=$(echo ${GITHUB_REF#refs/heads/} | sed -e 's/\//-/g')" >> $GITHUB_OUTPUT
+      - name: Remove images from GHCR
+        run: |
+          GHCR_IMAGE_PHP="ghcr.io/${{ github.repository }}-php:${{ steps.prepare.outputs.TAG_BRANCH }}"
+          GHCR_IMAGE_NGINX="ghcr.io/${{ github.repository }}-nginx:${{ steps.prepare.outputs.TAG_BRANCH }}"
+          echo "Deleting $GHCR_IMAGE_PHP and $GHCR_IMAGE_NGINX from GHCR..."
+          ghcr_token=$(echo "${{ secrets.GITHUB_TOKEN }}" | base64 --decode)
+          curl -X DELETE -u ${{ github.repository_owner }}:$ghcr_token "https://ghcr.io/v2/${{ github.repository }}-php/manifests/${{ steps.prepare.outputs.TAG_BRANCH }}"
+          curl -X DELETE -u ${{ github.repository_owner }}:$ghcr_token "https://ghcr.io/v2/${{ github.repository }}-nginx/manifests/${{ steps.prepare.outputs.TAG_BRANCH }}"
+      - name: Remove images from Docker Hub
+        run: |
+          DOCKER_HUB_IMAGE_PHP="na2na/${{ steps.prepare.outputs.name }}-php:${{ steps.prepare.outputs.TAG_BRANCH }}"
+          DOCKER_HUB_IMAGE_NGINX="na2na/${{ steps.prepare.outputs.name }}-nginx:${{ steps.prepare.outputs.TAG_BRANCH }}"
+          echo "Deleting $DOCKER_HUB_IMAGE_PHP and $DOCKER_HUB_IMAGE_NGINX from Docker Hub..."
+          docker_hub_token=$(curl -s -X POST -H "Content-Type: application/json" -d '{"username": "'${{ secrets.DOCKER_HUB_NA2NA_ID }}'", "password": "'${{ secrets.DOCKER_HUB_NA2NA_PASSWORD }}'"}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+          curl -X DELETE -H "Authorization: JWT $docker_hub_token" "https://hub.docker.com/v2/repositories/na2na/${{ steps.prepare.outputs.name }}-php/tags/${{ steps.prepare.outputs.TAG_BRANCH }}"
+          curl -X DELETE -H "Authorization: JWT $docker_hub_token" "https://hub.docker.com/v2/repositories/na2na/${{ steps.prepare.outputs.name }}-nginx/tags/${{ steps.prepare.outputs.TAG_BRANCH }}"
