@@ -55,7 +55,7 @@ jobs:
     secrets: inherit
     with:
       docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
-  image-push-to:
+  image-push:
     if: github.event.pull_request.draft == false
     uses: ./.github/workflows/image-push.yml
     needs:
