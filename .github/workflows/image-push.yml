@@ -27,6 +27,7 @@ jobs:
         id: prepare
         run: |
           echo "name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}" >> $GITHUB_OUTPUT
+          echo "OWNER_REPO=$(echo ${GITHUB_REPOSITORY} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
       - name: Generate github token
         id: generate_token
         uses: tibdex/github-app-token@v2.1.0
@@ -58,18 +59,18 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_NA2NA_PASSWORD }}
       - name: Push to registry
         run: |
-          docker tag localhost:5000/php-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.name }}-php:${{ inputs.sha_short }}
-          docker tag localhost:5000/nginx-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.name }}-nginx:${{ inputs.sha_short }}
-          docker tag localhost:5000/php-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.name }}-php:${{ inputs.branch }}
-          docker tag localhost:5000/nginx-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.name }}-nginx:${{ inputs.branch }}
+          docker tag localhost:5000/php-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-php:${{ inputs.sha_short }}
+          docker tag localhost:5000/nginx-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-nginx:${{ inputs.sha_short }}
+          docker tag localhost:5000/php-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-php:${{ inputs.branch }}
+          docker tag localhost:5000/nginx-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-nginx:${{ inputs.branch }}
           docker tag localhost:5000/php-ci:${{ inputs.docker_image_tag_ci }} na2na/${{ steps.prepare.outputs.name }}-php:${{ inputs.sha_short }}
           docker tag localhost:5000/nginx-ci:${{ inputs.docker_image_tag_ci }} na2na/${{ steps.prepare.outputs.name }}-nginx:${{ inputs.sha_short }}
           docker tag localhost:5000/php-ci:${{ inputs.docker_image_tag_ci }} na2na/${{ steps.prepare.outputs.name }}-php:${{ inputs.branch }}
           docker tag localhost:5000/nginx-ci:${{ inputs.docker_image_tag_ci }} na2na/${{ steps.prepare.outputs.name }}-nginx:${{ inputs.branch }}
-          docker push ghcr.io/${{ steps.prepare.outputs.name }}-php:${{ inputs.sha_short }}
-          docker push ghcr.io/${{ steps.prepare.outputs.name }}-nginx:${{ inputs.sha_short }}
-          docker push ghcr.io/${{ steps.prepare.outputs.name }}-php:${{ inputs.branch }}
-          docker push ghcr.io/${{ steps.prepare.outputs.name }}-nginx:${{ inputs.branch }}
+          docker push ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-php:${{ inputs.sha_short }}
+          docker push ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-nginx:${{ inputs.sha_short }}
+          docker push ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-php:${{ inputs.branch }}
+          docker push ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-nginx:${{ inputs.branch }}
           docker push na2na/${{ steps.prepare.outputs.name }}-php:${{ inputs.sha_short }}
           docker push na2na/${{ steps.prepare.outputs.name }}-nginx:${{ inputs.sha_short }}
           docker push na2na/${{ steps.prepare.outputs.name }}-php:${{ inputs.branch }}
