@@ -26,6 +26,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Delete package version
+        if: steps.get_package_version_id.outputs.PACKAGE_VERSION_ID != null
         run: |
           echo "Deleting package version ${{ steps.get_package_version_id.outputs.PACKAGE_VERSION_ID }}..."
           gh api -X DELETE /orgs/${{ github.repository_owner }}/packages/container/${{ inputs.package-name }}/versions/${{ steps.get_package_version_id.outputs.PACKAGE_VERSION_ID }}
