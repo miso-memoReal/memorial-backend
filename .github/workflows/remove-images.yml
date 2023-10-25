@@ -42,9 +42,11 @@ jobs:
     with:
       package-name: ${{ needs.prepare.outputs.name }}-php
       tag-name: ${{ inputs.branch }}
+    secrets: inherit
   remove-ghcr-images-nginx:
     needs: prepare
     uses: ./.github/workflows/remove-ghcr-image.yml
     with:
       package-name: ${{ needs.prepare.outputs.name }}-nginx
       tag-name: ${{ inputs.branch }}
+    secrets: inherit
