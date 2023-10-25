@@ -70,4 +70,8 @@ jobs:
     secrets: inherit
   remove-images:
     uses: ./.github/workflows/remove-images.yml
-    needs: image-push
+    needs:
+      - prepare
+      - image-push
+    with:
+      branch: ${{ needs.prepare.outputs.head_ref }}
