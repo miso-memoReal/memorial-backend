@@ -52,14 +52,21 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_NA2NA_ID }}
           password: ${{ secrets.DOCKER_HUB_NA2NA_PASSWORD }}
-      # - name: Push to registry
-      # # tagはsha_short, branch
-      #   run: |
-      #     docker tag ${{ inputs.DOCKER_IMAGE_TAG_CI }} ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:${{ inputs.sha_short }}
-      #     docker tag ${{ inputs.DOCKER_IMAGE_TAG_CI }} ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:${{ inputs.branch }}
-      #     docker tag ${{ inputs.DOCKER_IMAGE_TAG_CI }} na2na/${{ github.repository }}:${{ inputs.sha_short }}
-      #     docker tag ${{ inputs.DOCKER_IMAGE_TAG_CI }} na2na/${{ github.repository }}:${{ inputs.branch }}
-      #     docker push ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:${{ inputs.sha_short }}
-      #     docker push ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:${{ inputs.branch }}
-      #     docker push na2na/${{ github.repository }}:${{ inputs.sha_short }}
-      #     docker push na2na/${{ github.repository }}:${{ inputs.branch }}
+      - name: Push to registry
+        run: |
+          docker tag localhost:5000/php-ci ghcr.io/${{ github.repository }}-php:${{ inputs.sha_short }}
+          docker tag localhost:5000/nginx-ci ghcr.io/${{ github.repository }}-nginx:${{ inputs.sha_short }}
+          docker tag localhost:5000/php-ci ghcr.io/${{ github.repository }}-php:${{ inputs.branch }}
+          docker tag localhost:5000/nginx-ci ghcr.io/${{ github.repository }}-nginx:${{ inputs.branch }}
+          docker tag localhost:5000/php-ci na2na/${{ github.repository }}-php:${{ inputs.sha_short }}
+          docker tag localhost:5000/nginx-ci na2na/${{ github.repository }}-nginx:${{ inputs.sha_short }}
+          docker tag localhost:5000/php-ci na2na/${{ github.repository }}-php:${{ inputs.branch }}
+          docker tag localhost:5000/nginx-ci na2na/${{ github.repository }}-nginx:${{ inputs.branch }}
+          docker push ghcr.io/${{ github.repository }}-php:${{ inputs.sha_short }}
+          docker push ghcr.io/${{ github.repository }}-nginx:${{ inputs.sha_short }}
+          docker push ghcr.io/${{ github.repository }}-php:${{ inputs.branch }}
+          docker push ghcr.io/${{ github.repository }}-nginx:${{ inputs.branch }}
+          docker push na2na/${{ github.repository }}-php:${{ inputs.sha_short }}
+          docker push na2na/${{ github.repository }}-nginx:${{ inputs.sha_short }}
+          docker push na2na/${{ github.repository }}-php:${{ inputs.branch }}
+          docker push na2na/${{ github.repository }}-nginx:${{ inputs.branch }}
