@@ -70,7 +70,6 @@ jobs:
       - name: Push to registry (Only main push)
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "${{ inputs.sha_short }}"
           docker tag localhost:5000/php-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-php:${{ inputs.sha_short }}
           docker tag localhost:5000/nginx-ci:${{ inputs.docker_image_tag_ci }} ghcr.io/${{ steps.prepare.outputs.OWNER_REPO }}-nginx:${{ inputs.sha_short }}
           docker tag localhost:5000/php-ci:${{ inputs.docker_image_tag_ci }} na2na/${{ steps.prepare.outputs.name }}-php:${{ inputs.sha_short }}
