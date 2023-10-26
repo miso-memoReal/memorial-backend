@@ -20,6 +20,7 @@ jobs:
     outputs:
       name: ${{ steps.prepare.outputs.name }}
       lower_owner_repo: ${{ steps.prepare.outputs.OWNER_REPO }}
+      tagName: ${{ steps.prepare.outputs.tagName }}
   remove-docker-hub-images:
     runs-on: ubuntu-latest
     needs: prepare
