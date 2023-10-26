@@ -30,7 +30,6 @@ jobs:
       sha_short: ${{ steps.vars.outputs.sha_short }}
       head_ref: ${{ steps.vars.outputs.head_ref }}
     steps:
-      - uses: actions/checkout@v4
       - name: Set outputs
         id: vars
         run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT && echo "head_ref=$(echo ${GITHUB_HEAD_REF} | sed -e 's/\//-/g')" >> $GITHUB_OUTPUT
@@ -55,6 +54,14 @@ jobs:
     secrets: inherit
     with:
       docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
+  remove-images:
+    uses: ./.github/workflows/remove-images.yml
+    needs:
+      - prepare
+      - build
+    with:
+      branch: ${{ needs.prepare.outputs.head_ref }}
+    secrets: inherit
   image-push:
     if: github.event.pull_request.draft == false
     uses: ./.github/workflows/image-push.yml
@@ -63,6 +70,7 @@ jobs:
       - build
       - ci
       - image-scan
+      - remove-images
     with:
       docker_image_tag_ci: ${{ needs.build.outputs.docker_image_tag_ci }}
       sha_short: ${{ needs.prepare.outputs.sha_short }}

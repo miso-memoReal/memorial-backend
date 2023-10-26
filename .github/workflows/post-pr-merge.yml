@@ -1,0 +1,15 @@
+name: Post PR Merge
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+    types:
+      - closed
+
+jobs:
+  remove-images:
+    uses: ./.github/workflows/remove-images.yml
+    with:
+      branch: ${{ github.event.pull_request.head.ref }}
+    secrets: inherit
