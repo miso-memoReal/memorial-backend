@@ -13,6 +13,10 @@ class Memo extends Model
 
     protected $primaryKey = 'memoID';
 
+    protected $guarded = [
+        'memoID',
+    ];
+
     public function memoCoordinate(): Attribute
     {
         return Attribute::make(
