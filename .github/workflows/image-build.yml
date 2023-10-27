@@ -1,14 +1,17 @@
 name: Image build
 on:
   workflow_call:
+    inputs:
+      compose_file:
+        description: Compose file to use
+        required: false
+        type: string
+        default: compose.ci.yml
     outputs:
       docker_image_tag_ci:
         description: Docker image tag for CI
         value: ${{ jobs.image-build.outputs.docker_image_tag_ci }}
   workflow_dispatch:
-
-env:
-  COMPOSE_FILE: compose.ci.yml
 
 jobs:
   image-build:
@@ -69,4 +72,4 @@ jobs:
               --set='*.cache-from=type=local,src=/tmp/.buildx-cache' \
               --set='*.cache-to=type=local,dest=/tmp/.buildx-cache' \
               --push \
-              -f "${COMPOSE_FILE}"
+              -f "${{ inputs.compose_file }}"
