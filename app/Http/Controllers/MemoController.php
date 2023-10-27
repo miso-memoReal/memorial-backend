@@ -11,8 +11,8 @@ class MemoController extends Controller
     {
 
         $distance = \DB::table('memos')
-            ->select(\DB::raw('*, ST_Distance(\'SRID=4326;POINT('.$x.' '.$y.')\', memos."memoCoordinate")'))
-            ->whereRaw('ST_Distance(\'SRID=4326;POINT('.$x.' '.$y.')\', memos."memoCoordinate") < 1000')
+            ->select(\DB::raw('*, ST_Distance(\'SRID=4326;POINT('.$x.' '.$y.')\', memos."coordinate")'))
+            ->whereRaw('ST_Distance(\'SRID=4326;POINT('.$x.' '.$y.')\', memos."coordinate") < 1000')
             ->limit(10)->get();
 
         return response()->json($distance);
@@ -30,11 +30,10 @@ class MemoController extends Controller
         ];
 
         Memo::create([
-            'memoContent' => $request->input('content'),
-            'memoCoordinate' => $point,
+            'content' => $request->input('content'),
+            'coordinate' => $point,
         ]);
 
         return response()->json(200);
-
     }
 }

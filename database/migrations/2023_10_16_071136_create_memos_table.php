@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('memos', function (Blueprint $table) {
-            $table->id('memoID');
-            $table->string('memoContent');
-            $table->geometry('memoCoordinate');
+            $table->id('id');
+            $table->string('content');
+            $table->geometry('coordinate');
             $table->timestamps(); // This will create 'created_at' and 'updated_at' timestamp columns
             $table->softDeletes();
         });
