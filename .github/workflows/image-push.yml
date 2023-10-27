@@ -13,10 +13,12 @@ on:
         description: 'branch name to deploy'
         type: string
         required: true
+      compose_file:
+        description: Compose file to use
+        required: false
+        type: string
+        default: compose.ci.yml
     secrets: {}
-
-env:
-  COMPOSE_FILE: compose.ci.yml
 
 jobs:
   push:
@@ -42,7 +44,7 @@ jobs:
           docker_image_tag_ci: ${{ inputs.DOCKER_IMAGE_TAG_CI }}
       - name: Pull from local registry
         run: |
-          docker compose -f ${{ env.COMPOSE_FILE }} pull laravel.test nginx
+          docker compose -f ${{ inputs.compose_file }} pull laravel.test nginx
       - name: List local images
         run: |
           docker images
