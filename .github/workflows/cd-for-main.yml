@@ -29,6 +29,8 @@ jobs:
     needs:
       - prepare
     uses: ./.github/workflows/image-build.yml
+    with:
+      compose_file: compose.prod.yml
     secrets: inherit
   image-push:
     uses: ./.github/workflows/image-push.yml
