@@ -1,7 +1,7 @@
 services:
 
     laravel.test:
-        image: localhost:5000/php-ci:${DOCKER_IMAGE_TAG_CI}
+        image: ghcr.io/miso-memoreal/memorial-backend-php:main
         build:
             context: .
             dockerfile: ./infra/php/Dockerfile
@@ -28,7 +28,7 @@ services:
             # redis:
             #     condition: service_started
     nginx:
-        image: localhost:5000/nginx-ci:${DOCKER_IMAGE_TAG_CI}
+        image: ghcr.io/miso-memoreal/memorial-backend-nginx:main
         build:
             context: ./infra/nginx
             dockerfile: Dockerfile
