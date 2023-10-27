@@ -8,7 +8,6 @@ services:
             args:
                 WWWGROUP: '${WWWGROUP}'
                 WWWUSER: '${WWWUSER}'
-            target: app-deploy
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -19,6 +18,7 @@ services:
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
         volumes:
+            - '.:/var/www/html'
             - 'php-fpm-socket:/var/run/php-fpm/'
         networks:
             - sail
