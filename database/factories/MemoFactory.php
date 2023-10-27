@@ -30,8 +30,8 @@ class MemoFactory extends Factory
         ];
 
         return [
-            'memoContent' => fake()->realText(254),
-            'memoCoordinate' => $point,
+            'content' => fake()->realText(254),
+            'coordinate' => $point,
         ];
     }
 }

@@ -11,13 +11,13 @@ class Memo extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'memoID';
+    protected $primaryKey = 'id';
 
     protected $guarded = [
-        'memoID',
+        'id',
     ];
 
-    public function memoCoordinate(): Attribute
+    public function coordinate(): Attribute
     {
         return Attribute::make(
             set: function ($point) {
