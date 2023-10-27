@@ -12,7 +12,7 @@ class MemoController extends Controller
 
         $distance = \DB::table('memos')
             ->select(\DB::raw('"id", "content", ST_Distance(\'SRID=4326;POINT(' . $x . ' ' . $y . ')\', memos."coordinate")'))
-            ->whereRaw('ST_Distance(\'SRID=4326;POINT(' . $x . ' ' . $y . ')\', memos."coordinate") < 100')
+            ->whereRaw('ST_Distance(\'SRID=4326;POINT(' . $x . ' ' . $y . ')\', memos."coordinate") < 50')
             ->limit(10)->get();
 
         return response()->json($distance);

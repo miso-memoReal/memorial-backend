@@ -19,13 +19,15 @@ class MemoFactory extends Factory
      */
     public function definition(): array
     {
+        $coordinates = [[35.691786495809346, 139.6967557074058], [35.691352701182204, 139.69689449407812], [35.69146374647899, 139.69716216795717], [35.691821005063105, 139.69691808693054], [35.69142235666152, 139.6966418193949], [35.692237868468176, 139.69743588503974]];
+        $randam = rand(0, 5);
         $latitude = fake()->latitude;
         $longitude = fake()->longitude;
         $point = [
             'type' => 'Point',
             'coordinates' => [
-                $latitude, // 経度
-                $longitude, // 緯度
+                $coordinates[$randam][0], // 経度
+                $coordinates[$randam][1], // 緯度
             ],
         ];
 
