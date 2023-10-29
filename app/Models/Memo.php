@@ -24,7 +24,7 @@ class Memo extends Model
     {
         return Attribute::make(
             set: static function ($point) {
-                return DB::raw("ST_GeomFromGeoJSON('".json_encode($point)."')");
+                return DB::raw("ST_GeomFromGeoJSON('". json_encode($point, JSON_THROW_ON_ERROR) ."')");
             }
         );
     }
