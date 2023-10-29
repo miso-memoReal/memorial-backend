@@ -22,7 +22,7 @@ class MemoServiceTest extends TestCase
 
         $memoService = app(MemoService::class);
         // MemoFactoryで使用されている座標の近くの座標を使用します。
-        $coordinate = new Coordinate(35.691786495809346, 139.6967557074058);
+        $coordinate = new Coordinate(longitude: 35.691786495809346, latitude: 139.6967557074058);
         $memos = $memoService->getNearbyMemos($coordinate);
 
         // 期待するメモの数が10であることを確認します。
