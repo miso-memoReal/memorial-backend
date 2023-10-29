@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Http\ValueObjects;
 
 use App\Http\ValueObjects\Coordinate;
 use PHPUnit\Framework\TestCase;
