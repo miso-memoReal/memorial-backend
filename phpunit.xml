@@ -27,6 +27,7 @@
         <exclude>
             <!-- NOTE: とりあえずテストはしないでおくもの -->
             <directory suffix=".php">./app/Console</directory>
+            <file>./app/Providers/RouteServiceProvider.php</file>
             <!-- NOTE: PJ的に使わない気がするか、あるいは中身を作り替える必要があるかもしれないもの -->
             <file>./app/Http/Middleware/Authenticate.php</file>
             <!-- NOTE: PJ的に多分使わないもの -->
