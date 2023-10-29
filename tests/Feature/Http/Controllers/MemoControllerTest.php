@@ -10,7 +10,7 @@ class MemoControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testIndex(): void
+    public function testLocateNearbyMemos(): void
     {
         for ($i = 0; $i < 10; $i++) {
             Memo::factory()->create();

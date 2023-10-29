@@ -19,6 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/memo/{x}/{y}', [MemoController::class, 'index']);
+Route::get('/memo/{x}/{y}', [MemoController::class, 'locateNearbyMemos']);
 
 Route::post('/memo', [MemoController::class, 'store']);
