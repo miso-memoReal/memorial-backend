@@ -22,12 +22,12 @@ class MemoFactory extends Factory
     public function definition(): array
     {
         $coordinates = [
-            [35.691786495809346, 139.6967557074058],
-            [35.691352701182204, 139.69689449407812],
-            [35.69146374647899, 139.69716216795717],
-            [35.691821005063105, 139.69691808693054],
-            [35.69142235666152, 139.6966418193949],
-            [35.692237868468176, 139.69743588503974],
+            ['latitude' => 35.691786495809346, 'longitude' => 139.6967557074058],
+            ['latitude' => 35.691352701182204, 'longitude' => 139.69689449407812],
+            ['latitude' => 35.69146374647899, 'longitude' => 139.69716216795717],
+            ['latitude' => 35.691821005063105, 'longitude' => 139.69691808693054],
+            ['latitude' => 35.69142235666152, 'longitude' => 139.6966418193949],
+            ['latitude' => 35.692237868468176, 'longitude' => 139.69743588503974],
         ];
 
         $coordinate = $coordinates[$this->index];
@@ -36,8 +36,8 @@ class MemoFactory extends Factory
         $point = [
             'type' => 'Point',
             'coordinates' => [
-                $coordinate[0],  // 緯度
-                $coordinate[1],  // 経度
+                $coordinate['latitude'],  // 緯度
+                $coordinate['longitude'],  // 経度
             ],
         ];
 

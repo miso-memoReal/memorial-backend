@@ -21,10 +21,10 @@ class MemoController extends Controller
     public function locateNearbyMemos(
         // HACK: パスパラメータのバリデーションのため
         LocateNearbyMemosRequest $_,
-        float $longitude,
-        float $latitude): JsonResponse
+        float                    $longitude,
+        float                    $latitude): JsonResponse
     {
-        $coordinate = new Coordinate($longitude, $latitude);
+        $coordinate = new Coordinate(longitude: $longitude, latitude: $latitude);
         $memos = $this->memoService->getNearbyMemos($coordinate);
 
         return response()->json($memos);
