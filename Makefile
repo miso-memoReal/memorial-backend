@@ -70,6 +70,10 @@ oas-generate:
 route-check:
 	(${SAIL} artisan route:list)
 
+.Pony: route-clear
+route-clear:
+	(${SAIL} artisan route:clear)
+
 .Pony: all-containers-build
 all-containers-build:
 	@make build
