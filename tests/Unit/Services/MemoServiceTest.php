@@ -18,6 +18,7 @@ class MemoServiceTest extends TestCase
         for ($i = 0; $i < 10; $i++) {
             Memo::factory()->create();
         }
+        $this->assertDatabaseCount('memos', 10);
 
         $memoService = app(MemoService::class);
         // MemoFactoryで使用されている座標の近くの座標を使用します。
