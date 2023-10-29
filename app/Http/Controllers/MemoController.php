@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LocateNearbyMemosRequest;
 use App\Http\Services\MemoService;
 use App\Http\ValueObjects\Coordinate;
 use App\Models\Memo;
@@ -17,7 +18,11 @@ class MemoController extends Controller
         $this->memoService = $memoService;
     }
 
-    public function locateNearbyMemos(float $longitude, float $latitude): JsonResponse
+    public function locateNearbyMemos(
+        // HACK: パスパラメータのバリデーションのため
+        LocateNearbyMemosRequest $_,
+        float $longitude,
+        float $latitude): JsonResponse
     {
         $coordinate = new Coordinate($longitude, $latitude);
         $memos = $this->memoService->getNearbyMemos($coordinate);
