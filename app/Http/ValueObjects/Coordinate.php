@@ -5,6 +5,7 @@ namespace App\Http\ValueObjects;
 class Coordinate
 {
     private float $longitude;
+
     private float $latitude;
 
     public function __construct(float $longitude, float $latitude)
@@ -25,6 +26,6 @@ class Coordinate
 
     public function toPoint(): string
     {
-        return 'SRID=4326;POINT(' . $this->longitude . ' ' . $this->latitude . ')';
+        return 'SRID=4326;POINT('.$this->longitude.' '.$this->latitude.')';
     }
 }

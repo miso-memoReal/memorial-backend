@@ -36,8 +36,8 @@ class MemoFactory extends Factory
         $point = [
             'type' => 'Point',
             'coordinates' => [
-                $coordinate[0],  // 経度
-                $coordinate[1],  // 緯度
+                $coordinate[0],  // 緯度
+                $coordinate[1],  // 経度
             ],
         ];
 
