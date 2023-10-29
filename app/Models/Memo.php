@@ -17,10 +17,13 @@ class Memo extends Model
         'id',
     ];
 
+    /**
+     * @return Attribute<mixed, mixed>
+     */
     public function coordinate(): Attribute
     {
         return Attribute::make(
-            set: function ($point) {
+            set: static function ($point) {
                 return DB::raw("ST_GeomFromGeoJSON('".json_encode($point)."')");
             }
         );
