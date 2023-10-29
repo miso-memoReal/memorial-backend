@@ -17,9 +17,9 @@ class MemoController extends Controller
         $this->memoService = $memoService;
     }
 
-    public function locateNearbyMemos(float $x, float $y): JsonResponse
+    public function locateNearbyMemos(float $longitude, float $latitude): JsonResponse
     {
-        $coordinate = new Coordinate($x, $y);
+        $coordinate = new Coordinate($longitude, $latitude);
         $memos = $this->memoService->getNearbyMemos($coordinate);
 
         return response()->json($memos);
