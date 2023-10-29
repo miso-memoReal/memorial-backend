@@ -11,8 +11,8 @@ class CoordinateTest extends TestCase
     {
         $coordinate = new Coordinate(35.6895, 139.6917);
 
-        $this->assertEquals(35.6895, $coordinate->x());
-        $this->assertEquals(139.6917, $coordinate->y());
+        $this->assertEquals(35.6895, $coordinate->longitude());
+        $this->assertEquals(139.6917, $coordinate->latitude());
     }
 
     public function testToPoint(): void

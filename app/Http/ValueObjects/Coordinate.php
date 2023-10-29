@@ -4,28 +4,27 @@ namespace App\Http\ValueObjects;
 
 class Coordinate
 {
-    private float $x;
+    private float $longitude;
+    private float $latitude;
 
-    private float $y;
-
-    public function __construct(float $x, float $y)
+    public function __construct(float $longitude, float $latitude)
     {
-        $this->x = $x;
-        $this->y = $y;
+        $this->longitude = $longitude;
+        $this->latitude = $latitude;
     }
 
-    public function x(): float
+    public function longitude(): float
     {
-        return $this->x;
+        return $this->longitude;
     }
 
-    public function y(): float
+    public function latitude(): float
     {
-        return $this->y;
+        return $this->latitude;
     }
 
     public function toPoint(): string
     {
-        return 'SRID=4326;POINT('.$this->x.' '.$this->y.')';
+        return 'SRID=4326;POINT(' . $this->longitude . ' ' . $this->latitude . ')';
     }
 }
