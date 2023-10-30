@@ -15,14 +15,12 @@ class MemoServiceTest extends TestCase
     public function testGetNearbyMemos(): void
     {
         // Memo::factory()を10回呼び出して、10個の異なるメモを作成します。
-        for ($i = 0; $i < 10; $i++) {
-            Memo::factory()->create();
-        }
+        Memo::factory()->count(10)->create();
         $this->assertDatabaseCount('memos', 10);
 
         $memoService = app(MemoService::class);
         // MemoFactoryで使用されている座標の近くの座標を使用します。
-        $coordinate = new Coordinate(longitude: 35.691786495809346, latitude: 139.6967557074058);
+        $coordinate = new Coordinate(longitude: 139.696982, latitude: 35.691706);
         $memos = $memoService->getNearbyMemos($coordinate);
 
         // 期待するメモの数が10であることを確認します。
