@@ -21,7 +21,8 @@ class MemoService
         $point = $coordinate->toPoint();
 
         return DB::table('memos')
-            ->select(['id', 'content', DB::raw("ST_Distance('{$point}', memos.\"coordinate\") as distance")])
+            ->select(['id', 'content', DB::raw("ST_Distance('{$point}', memos.\"coordinate\") as distance"), DB::raw('ST_X(ST_AsText(memos."coordinate")) as longitude'),
+                DB::raw('ST_Y(ST_AsText(memos."coordinate")) as latitude')])
             ->whereRaw('ST_Distance('.DB::getPdo()->quote($point).', memos."coordinate") < '.DISTANCE_THRESHOLD)
             ->orderBy('distance')
             ->limit(LIMIT)
