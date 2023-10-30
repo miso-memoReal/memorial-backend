@@ -21,16 +21,6 @@ class MemoFactory extends Factory
      */
     public function definition(): array
     {
-//        $coordinates = [
-//            ['latitude' => 35.691786, 'longitude' => 139.696755],
-//            ['latitude' => 35.691352, 'longitude' => 139.696894],
-//            ['latitude' => 35.691463, 'longitude' => 139.697162],
-//            ['latitude' => 35.691821, 'longitude' => 139.696918],
-//            ['latitude' => 35.691422, 'longitude' => 139.696641],
-//            ['latitude' => 35.692237, 'longitude' => 139.697435],
-//        ];
-//
-//        $coordinate = $coordinates[$this->index];
         ++$this->index;
 
         $point = [
