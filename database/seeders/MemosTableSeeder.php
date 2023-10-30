@@ -12,6 +12,6 @@ class MemosTableSeeder extends Seeder
      */
     public function run(): void
     {
-        Memo::factory()->count(10)->create();
+        Memo::factory()->count(3)->create();
     }
 }
