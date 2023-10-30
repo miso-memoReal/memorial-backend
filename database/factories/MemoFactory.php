@@ -12,7 +12,7 @@ class MemoFactory extends Factory
 {
     protected $model = Memo::class;
 
-//    private int $index = 0;
+    private int $index = 0;
 
     /**
      * Define the model's default state.
@@ -31,13 +31,13 @@ class MemoFactory extends Factory
 //        ];
 //
 //        $coordinate = $coordinates[$this->index];
-//        $this->index = ($this->index + 1) % count($coordinates);
+        ++$this->index;
 
         $point = [
             'type' => 'Point',
             'coordinates' => [
-                139.696755,  // 経度
-                35.691706,  // 緯度
+                139.696755 + $this->index * 0.0001,  // 経度
+                35.691706 + $this->index * 0.0001,  // 緯度
             ],
         ];
 

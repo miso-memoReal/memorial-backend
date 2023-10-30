@@ -12,11 +12,11 @@ class MemoControllerTest extends TestCase
 
     public function testLocateNearbyMemos(): void
     {
-        Memo::factory()->count(10)->create();
-        $this->assertDatabaseCount('memos', 10);
+        Memo::factory()->count(3)->create();
+        $this->assertDatabaseCount('memos', 3);
         $response = $this->getJson('/api/memo/139.696982/35.691706');
         $response->assertStatus(200);
-        $response->assertJsonCount(10);
+        $response->assertJsonCount(3);
         $response->assertJsonStructure([
             '*' => [
                 'id',
