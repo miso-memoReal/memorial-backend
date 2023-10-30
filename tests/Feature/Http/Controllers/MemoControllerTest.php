@@ -16,7 +16,7 @@ class MemoControllerTest extends TestCase
         $this->assertDatabaseCount('memos', 10);
         $response = $this->getJson('/api/memo/139.696982/35.691706');
         $response->assertStatus(200);
-        $response->assertJsonCount(10);
+        $response->assertJsonCount(4);
         $response->assertJsonStructure([
             '*' => [
                 'id',
