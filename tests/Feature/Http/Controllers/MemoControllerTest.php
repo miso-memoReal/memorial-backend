@@ -34,6 +34,8 @@ class MemoControllerTest extends TestCase
                 'id',
                 'content',
                 'distance',
+                'longitude',
+                'latitude'
             ],
         ]);
     }
