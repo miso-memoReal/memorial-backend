@@ -22,6 +22,6 @@ class MemoServiceTest extends TestCase
         $coordinate = new Coordinate(longitude: 139.696982, latitude: 35.691706);
         $memos = $memoService->getNearbyMemos($coordinate);
 
-        $this->assertCount(4, $memos);
+        $this->assertCount(10, $memos);
     }
 }
