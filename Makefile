@@ -36,8 +36,8 @@ generate:
 	(${BACKEND_ENV} php artisan ide-helper:generate)
     # TODO: 接続先をPostgresに変更する
 	@make migrate
-    # TODO: DB周りいい感じになったら入れる
-	@make annotation
+    # TODO: geographyでぶっ壊れるので当面なし
+	@#make annotation
 	# TODO: OpenAPI スキーマ
 	# @make oas-generate
 
