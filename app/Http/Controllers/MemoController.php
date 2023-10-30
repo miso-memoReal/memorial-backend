@@ -2,20 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LocateNearbyMemosRequest;
+use App\Http\Services\MemoService;
+use App\Http\ValueObjects\Coordinate;
 use App\Models\Memo;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MemoController extends Controller
 {
-    public function index(float $x, float $y)
+    private MemoService $memoService;
+
+    public function __construct(MemoService $memoService)
     {
+        $this->memoService = $memoService;
+    }
 
-        $distance = \DB::table('memos')
-            ->select(\DB::raw('"id", "content", ST_Distance(\'SRID=4326;POINT(' . $x . ' ' . $y . ')\', memos."coordinate")'))
-            ->whereRaw('ST_Distance(\'SRID=4326;POINT(' . $x . ' ' . $y . ')\', memos."coordinate") < 50')
-            ->limit(10)->get();
+    public function locateNearbyMemos(
+        // HACK: パスパラメータのバリデーションのため
+        LocateNearbyMemosRequest $_,
+        float                    $longitude,
+        float                    $latitude): JsonResponse
+    {
+        $coordinate = new Coordinate(longitude: $longitude, latitude: $latitude);
+        $memos = $this->memoService->getNearbyMemos($coordinate);
 
-        return response()->json($distance);
+        return response()->json($memos);
     }
 
     public function store(Request $request)
