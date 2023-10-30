@@ -36,8 +36,8 @@ class MemoController extends Controller
         $point = [
             'type' => 'Point',
             'coordinates' => [
-                $request->input('latitude'),
                 $request->input('longitude'),
+                $request->input('latitude'),
             ],
         ];
 
