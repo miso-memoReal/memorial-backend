@@ -23,11 +23,12 @@ class MemoFactory extends Factory
     {
         ++$this->index;
 
+
         $point = [
             'type' => 'Point',
             'coordinates' => [
-                139.696755 + $this->index * 0.0001,  // 経度
-                35.691706 + $this->index * 0.0001,  // 緯度
+                (float)('139.69675' . $this->index * 0.00001),  // 経度
+                (float)('35.69170' . $this->index * 0.00001),  // 緯度
             ],
         ];
 
