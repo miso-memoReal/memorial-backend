@@ -11,8 +11,8 @@ class MemoControllerRouteValidationTest extends TestCase
 
     public function testValidCoordinates(): void
     {
-        // 正しい座標値を使用してリクエストを送信
-        $response = $this->getJson('/api/memo/139.6917/35.6895');
+        // 正しい座標値（小数点以下6桁）を使用してリクエストを送信
+        $response = $this->getJson('/api/memo/139.691700/35.689500');
 
         // 200 OKのレスポンスを期待
         $response->assertStatus(200);
@@ -21,18 +21,36 @@ class MemoControllerRouteValidationTest extends TestCase
     public function testInvalidLongitude(): void
     {
         // 無効な経度値を使用してリクエストを送信
-        $response = $this->getJson('/api/memo/invalid/35.6895');
+        $response = $this->getJson('/api/memo/invalid/35.689500');
 
-        // 404 Not Foundのレスポンスを期待
+        // 400 Bad Requestのレスポンスを期待
         $response->assertStatus(400);
     }
 
     public function testInvalidLatitude(): void
     {
         // 無効な緯度値を使用してリクエストを送信
-        $response = $this->getJson('/api/memo/139.6917/invalid');
+        $response = $this->getJson('/api/memo/139.691700/invalid');
 
-        // 404 Not Foundのレスポンスを期待
+        // 400 Bad Requestのレスポンスを期待
+        $response->assertStatus(400);
+    }
+
+    public function testInvalidDigitsLongitude(): void
+    {
+        // 無効な経度値（小数点以下の桁数が6桁でない）を使用してリクエストを送信
+        $response = $this->getJson('/api/memo/139.69/35.689500');
+
+        // 400 Bad Requestのレスポンスを期待
+        $response->assertStatus(400);
+    }
+
+    public function testInvalidDigitsLatitude(): void
+    {
+        // 無効な緯度値（小数点以下の桁数が6桁でない）を使用してリクエストを送信
+        $response = $this->getJson('/api/memo/139.691700/35.69');
+
+        // 400 Bad Requestのレスポンスを期待
         $response->assertStatus(400);
     }
 }
