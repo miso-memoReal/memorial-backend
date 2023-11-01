@@ -42,3 +42,11 @@ jobs:
       sha_short: ${{ needs.prepare.outputs.sha_short }}
       branch: main
     secrets: inherit
+  deploy:
+    needs:
+      - prepare
+      - build
+      - image-push
+    uses: ./.github/workflows/deploy-to-okteto.yml
+    with:
+      tag_name: ${{ needs.prepare.outputs.sha_short }}
