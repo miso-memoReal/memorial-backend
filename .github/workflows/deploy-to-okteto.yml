@@ -1,0 +1,32 @@
+on:
+  workflow_call:
+    inputs:
+      tag_name:
+        description: 'Tag name'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name'
+        required: true
+
+name: Deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container: okteto/okteto:2.21.0
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: miso-memoReal/memorial-infra
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: "Deploy the preview environment"
+      run: |
+        okteto context use --token=${{ secrets.OKTETO_TOKEN }}
+        eval okteto kubeconfig
+        helm upgrade --install memorial-na2na-p backend/k8s/charts --set nginx.image.tag=${TAG_NAME} --set laravel.image.tag=${TAG_NAME}
+      env:
+        TAG_NAME: ${{ github.event.inputs.tag_name }}
