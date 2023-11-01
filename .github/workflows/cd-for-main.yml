@@ -50,3 +50,4 @@ jobs:
     uses: ./.github/workflows/deploy-to-okteto.yml
     with:
       tag_name: ${{ needs.prepare.outputs.sha_short }}
+    secrets: inherit
