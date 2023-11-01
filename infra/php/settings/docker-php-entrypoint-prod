@@ -6,9 +6,9 @@ if [ "${1#-}" != "$1" ]; then
 	set -- php-fpm "$@"
 fi
 
-php artisan optimize
+# HACK: 強制的にマイグレーション
+php artisan migrate --force
 
-# migrate
-php artisan migrate
+php artisan optimize
 
 exec "$@"
