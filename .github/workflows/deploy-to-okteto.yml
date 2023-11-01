@@ -35,4 +35,4 @@ jobs:
         eval okteto kubeconfig
         helm upgrade --install memorial-na2na-p backend/k8s/charts --set nginx.image.tag=${TAG_NAME} --set laravel.image.tag=${TAG_NAME}
       env:
-        TAG_NAME: ${{ github.event.inputs.tag_name }}
+        TAG_NAME: ${{ inputs.tag_name }}
