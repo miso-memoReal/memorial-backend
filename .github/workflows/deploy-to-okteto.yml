@@ -18,11 +18,17 @@ jobs:
     runs-on: ubuntu-latest
     container: okteto/okteto:2.21.0
     steps:
+    - name: Generate github token
+      id: generate_token
+      uses: tibdex/github-app-token@v2.1.0
+      with:
+        app_id: ${{ vars.APP_ID }}
+        private_key: ${{ secrets.APP_PRIVATE_KEY }}
     - name: Checkout
       uses: actions/checkout@v4
       with:
         repository: miso-memoReal/memorial-infra
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ steps.generate_token.outputs.token }}
     - name: "Deploy the preview environment"
       run: |
         okteto context use --token=${{ secrets.OKTETO_TOKEN }}
