@@ -33,7 +33,6 @@ class MemoController extends Controller
     {
 
         $validated = $request->validated();
-        $validated = $request->safe()->only(['longitude', 'latitude', 'content']);
 
         $point = [
             'type' => 'Point',
