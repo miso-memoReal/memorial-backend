@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LocateNearbyMemosRequest;
+use App\Http\Requests\RegistrationMemoRequest;
 use App\Http\Services\MemoService;
 use App\Http\ValueObjects\Coordinate;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class MemoController extends Controller
 {
@@ -29,18 +29,21 @@ class MemoController extends Controller
         return response()->json($memos);
     }
 
-    public function store(Request $request)
+    public function store(RegistrationMemoRequest $request)
     {
+
+        $validated = $request->validated();
+        $validated = $request->safe()->only(['longitude', 'latitude', 'content']);
 
         $point = [
             'type' => 'Point',
             'coordinates' => [
-                $request->input('longitude'),
-                $request->input('latitude'),
+                $validated['longitude'],
+                $validated['latitude'],
             ],
         ];
 
-        $content = $request->input('content');
+        $content = $validated['content'];
 
         $this->memoService->registrationMemo($point, $content);
 
