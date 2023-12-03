@@ -1,9 +1,9 @@
-ARG ARG_PHP_VERSION=8.2.13
-ARG ARG_COMPOSER_VERSION=2.6.5
+ARG PHP_VERSION=8.2.13
+ARG COMPOSER_VERSION=2.6.5
 
-FROM composer:${ARG_COMPOSER_VERSION} as composer
+FROM composer:${COMPOSER_VERSION} as composer
 
-FROM php:${ARG_PHP_VERSION}-fpm-alpine as app-base
+FROM php:${PHP_VERSION}-fpm-alpine as app-base
 
 RUN apk add --no-cache tzdata
 ENV TZ=Asia/Tokyo \
