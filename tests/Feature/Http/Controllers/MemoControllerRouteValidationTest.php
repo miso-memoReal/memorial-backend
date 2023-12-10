@@ -53,4 +53,22 @@ class MemoControllerRouteValidationTest extends TestCase
         // 400 Bad Requestのレスポンスを期待
         $response->assertStatus(400);
     }
+
+    public function testTooSmallDigitsLongitude(): void
+    {
+        // 無効な経度値（小数点以下の桁数が7桁以下）を使用してリクエストを送信
+        $response = $this->getJson('/api/memo/139.691700/35.689500');
+
+        // 400 Bad Requestのレスポンスを期待
+        $response->assertStatus(200);
+    }
+
+    public function testTooSmallDigitsLatitude(): void
+    {
+        // 無効な緯度値（小数点以下の桁数が7桁以下）を使用してリクエストを送信
+        $response = $this->getJson('/api/memo/139.691700/35.6969');
+
+        // 400 Bad Requestのレスポンスを期待
+        $response->assertStatus(200);
+    }
 }
