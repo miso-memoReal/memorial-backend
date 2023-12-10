@@ -13,8 +13,8 @@ class LocateNearbyMemosRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'latitude' => ['required', 'numeric', 'regex:/^[-]?((([0-8]?[0-9])(\.[0-9]{6}))|90(\.0{6}))$/'],
-            'longitude' => ['required', 'numeric', 'regex:/^[-]?(((([1][0-7][0-9])|([0-9]?[0-9]))(\.[0-9]{6}))|180(\.0{6}))$/'],
+            'latitude' => ['required', 'numeric', 'regex:/^[-]?((([0-8]?[0-9])(\.[0-9]{1,7}))|90(\.0{1,7})?)$/'],
+            'longitude' => ['required', 'numeric', 'regex:/^[-]?(((([1][0-7][0-9])|([0-9]?[0-9]))(\.[0-9]{1,7}))|180(\.0{1,7}))$/'],
         ];
     }
 }
