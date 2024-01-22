@@ -1,0 +1,39 @@
+on:
+  workflow_call:
+    inputs:
+      tag_name:
+        description: 'Tag name'
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name'
+        required: true
+
+name: Deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate github token
+        id: generate_token
+        uses: tibdex/github-app-token@v2.1.0
+        with:
+          app_id: ${{ vars.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: miso-memoReal/memorial-infra
+          token: ${{ steps.generate_token.outputs.token }}
+      - name: Login to ArgoCD
+        run: |
+          argocd login --insecure --username ${{ secrets.ARGOCD_USER }} --password ${{ secrets.ARGOCD_PASSWORD }} --grpc-web ${{ secrets.ARGOCD_SERVER }}
+      - name: Update parameters
+        run: |
+          argocd app set app-main -p laravel.image.tag=${{ inputs.tag_name }}
+      - name: Sync
+        run: |
+          argocd app sync app-main
