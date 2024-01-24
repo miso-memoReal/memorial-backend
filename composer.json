@@ -7,7 +7,7 @@
     "require": {
         "php": "^8.3.2",
         "guzzlehttp/guzzle": "^7.8.1",
-        "laravel/framework": "^10.41.0",
+        "laravel/framework": "^10.42.0",
         "laravel/sanctum": "^3.3.3",
         "laravel/tinker": "^2.9.0"
     },
@@ -15,7 +15,7 @@
         "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.23.1",
         "laravel/pint": "^1.13.10",
-        "laravel/sail": "^1.27.1",
+        "laravel/sail": "^1.27.2",
         "mockery/mockery": "^1.6.7",
         "nunomaduro/collision": "^7.10.0",
         "nunomaduro/larastan": "^2.8.1",
