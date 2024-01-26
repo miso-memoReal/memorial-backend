@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app-${ENV}
+spec:
+  generators:
+    - list:
+        elements:
+          - env: ${ENV}
+            tag: ${TAG}
+            infraTargetRevision: ${INFRA_REF}
+  template:
+    metadata:
+      name: 'app-{{env}}'
+    spec:
+      project: default
+      source:
+        repoURL: 'git@github.com:miso-memoReal/memorial-infra.git'
+        targetRevision: '{{infraTargetRevision}}'
+        path: backend/k8s/charts
+        helm:
+          parameters:
+            - name: envs.app.APP_URL_DOMAIN
+              value: api-th468.na2na.dev
+            - name: images.app.tag
+              value: '{{tag}}'
+            - name: images.nginx.tag
+              value: '{{tag}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: 'app-{{env}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
