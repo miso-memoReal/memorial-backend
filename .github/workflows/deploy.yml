@@ -36,7 +36,7 @@ jobs:
           echo "$KUBE_CONFIG_DATA" | base64 --decode > /tmp/kube_config
       - name: Install or upgrade applications
         run: |
-          envsubst < .github/applicationset.template.yaml | kubectl apply -f -
+          envsubst < .github/applicationset.template.yaml | kubectl apply -n argocd -f -
         env:
           ENV: main
           TAG: ${{ inputs.tag_name }}
