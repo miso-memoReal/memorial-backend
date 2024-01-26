@@ -27,21 +27,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup asdf
-        uses: asdf-vm/actions/setup@v3.0.2
-        continue-on-error: true
-      - name: Cache asdf
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.asdf
-          key: ${{ runner.os }}-asdf-${{ hashFiles('**/.tool-versions') }}
-      - name: asdf install
-        uses: asdf-vm/actions/install@v3.0.2
+      - name: setup kubectl
+        uses: azure/setup-kubectl@v3.2
       - name: Create Kubernetes config
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        run: echo "$KUBE_CONFIG_DATA" | base64 -d > $GITHUB_WORKSPACE/.kube/config
+        run: |
+          echo "$KUBE_CONFIG_DATA" | base64 --decode > /tmp/kube_config
       - name: Install or upgrade applications
         run: |
           envsubst < .github/applicationset.template.yaml | kubectl apply -f -
@@ -49,3 +41,4 @@ jobs:
           ENV: main
           TAG: ${{ inputs.tag_name }}
           INFRA_REF: ${{ inputs.infra_ref }}
+          KUBECONFIG: /tmp/kube_config
