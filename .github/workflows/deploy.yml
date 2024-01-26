@@ -2,13 +2,13 @@ on:
   workflow_call:
     inputs:
       tag_name:
-        description: 'Tag name'
+        description: "Tag name"
         required: true
         type: string
   workflow_dispatch:
     inputs:
       tag_name:
-        description: 'Tag name'
+        description: "Tag name"
         required: true
 
 name: Deploy
@@ -36,6 +36,3 @@ jobs:
       - name: Update parameters
         run: |
           argocd app set app-main -p laravel.image.tag=${{ inputs.tag_name }} -p nginx.image.tag=${{ inputs.tag_name }} --grpc-web
-      - name: Sync
-        run: |
-          argocd app sync app-main
