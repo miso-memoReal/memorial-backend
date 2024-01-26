@@ -5,11 +5,19 @@ on:
         description: "Tag name"
         required: true
         type: string
+      infra_ref:
+        description: "Infrastructure reference"
+        default: "main"
+        type: string
   workflow_dispatch:
     inputs:
       tag_name:
         description: "Tag name"
         required: true
+      infra_ref:
+        description: "Infrastructure reference"
+        default: "main"
+        type: string
 
 name: Deploy
 
@@ -30,9 +38,14 @@ jobs:
           key: ${{ runner.os }}-asdf-${{ hashFiles('**/.tool-versions') }}
       - name: asdf install
         uses: asdf-vm/actions/install@v3.0.2
-      - name: Login to ArgoCD
+      - name: Create Kubernetes config
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        run: echo "$KUBE_CONFIG_DATA" | base64 -d > $GITHUB_WORKSPACE/.kube/config
+      - name: Install or upgrade applications
         run: |
-          argocd login --insecure --username ${{ secrets.ARGOCD_USER }} --password ${{ secrets.ARGOCD_PASSWORD }} --grpc-web ${{ secrets.ARGOCD_SERVER }}
-      - name: Update parameters
-        run: |
-          argocd app set app-main -p images.app.tag=${{ inputs.tag_name }} -p images.nginx.tag=${{ inputs.tag_name }} --grpc-web
+          envsubst < .github/applicationset.template.yaml | kubectl apply -f -
+        env:
+          ENV: main
+          TAG: ${{ inputs.tag_name }}
+          INFRA_REF: ${{ inputs.infra_ref }}
