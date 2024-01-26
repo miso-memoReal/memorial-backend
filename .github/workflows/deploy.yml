@@ -35,4 +35,4 @@ jobs:
           argocd login --insecure --username ${{ secrets.ARGOCD_USER }} --password ${{ secrets.ARGOCD_PASSWORD }} --grpc-web ${{ secrets.ARGOCD_SERVER }}
       - name: Update parameters
         run: |
-          argocd app set app-main -p laravel.image.tag=${{ inputs.tag_name }} -p nginx.image.tag=${{ inputs.tag_name }} --grpc-web
+          argocd app set app-main -p images.app.tag=${{ inputs.tag_name }} -p images.nginx.tag=${{ inputs.tag_name }} --grpc-web
