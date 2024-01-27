@@ -9,6 +9,7 @@ spec:
           - env: ${ENV}
             tag: ${TAG}
             infraTargetRevision: ${INFRA_REF}
+            appKey: ${APP_KEY}
   template:
     metadata:
       name: 'app-{{env}}'
@@ -26,6 +27,8 @@ spec:
               value: '{{tag}}'
             - name: images.nginx.tag
               value: '{{tag}}'
+            - name: envs.app.APP_KEY
+              value: '{{appKey}}'
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: 'app-{{env}}'
